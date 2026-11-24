@@ -1,0 +1,50 @@
+# 単価と見積もりの前提。すべて USD。
+# 確認日 2026-11-02(各社の公式ドキュメント)。単価は変わるので、本番の前に source を開いて確かめる。
+#
+# estimate: 1回の回答あたりの「推定」トークン数と検索回数。実測ではない。
+#   本番を1回流したら summary.md の「実測の使用量」を見て、この値を直す。
+
+providers:
+  openai:
+    model: gpt-6.1-sol             # 公式推奨の gpt-6-astra は1回答 約$0.41 と高いため、1つ下の主力を使う(2026-11-04)
+    input_per_mtok: 2.00           # 272K以下(2026-11-04 確認)
+    output_per_mtok: 10.00
+    search_per_call: 0.010         # web search は $10/1k 回。検索で読んだ本文はモデル単価で入力トークンに加算(2026-11-04 確認)
+    source: https://developers.openai.com/api/docs/pricing ・ https://developers.openai.com/api/docs/models
+    estimate: {input_tokens: 31000, output_tokens: 1000, searches: 5}   # 2026-11-04 実測(gpt-6-astra で1回。sol で測り直す)
+
+  anthropic:
+    model: claude-opus-5-5
+    input_per_mtok: 4.00
+    output_per_mtok: 20.00
+    search_per_call: 0.010         # $10/1k 回。検索結果は入力トークンとして課金
+    source: https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool
+    estimate: {input_tokens: 13000, output_tokens: 1500, searches: 1}   # 2026-11-02 実測(direct検索)
+
+  gemini:
+    model: gemini-3.8-flash
+    input_per_mtok: 0.75           # 2026-12-31まで。2027-01-01から 1.50 / 7.50 に上がる
+    output_per_mtok: 3.75
+    search_per_call: 0.014         # Gemini 3以降は検索クエリ1回ごと。月5,000回まで無料(見積もりでは無料枠を見ない)
+    source: https://ai.google.dev/gemini-api/docs/pricing
+    estimate: {input_tokens: 150, output_tokens: 1400, searches: 2}     # 2026-11-02 実測(思考トークン込み)
+
+  perplexity:
+    model: perplexity/sonar        # Agent API 経由。Perplexity 自身の検索特化モデル
+    input_per_mtok: 0.25
+    output_per_mtok: 2.50
+    search_per_call: 0.0025        # Agent API の web_search 1回
+    source: https://docs.perplexity.ai/getting-started/pricing
+    estimate: {input_tokens: 3000, output_tokens: 1000, searches: 1}
+
+# 回答の判定(競合店の抽出・facts との矛盾チェック)に使う安いモデル
+# provider は anthropic か gemini。2026-11-02 に Anthropic のクレジットが切れたため gemini にしている。
+# anthropic に戻すとき: provider: anthropic / model: claude-haiku-5-5 / 0.10 / 0.50
+# (source: https://platform.claude.com/docs/en/about-claude/pricing)
+judge:
+  provider: gemini
+  model: gemini-3.8-flash
+  input_per_mtok: 0.75
+  output_per_mtok: 3.75            # 思考トークンも出力として数える
+  source: https://ai.google.dev/gemini-api/docs/pricing
+  estimate: {input_tokens: 4000, output_tokens: 1500}
