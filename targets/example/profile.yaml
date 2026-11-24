@@ -1,0 +1,16 @@
+# 測るお店の名前と、AI の答えの中で「このお店のこと」と見なす書き方。架空のお店の見本
+id: example
+brand: Example Head Spa
+aliases:            # 答えにこのどれかが出たら「名前が出た」と数える
+  - Example Head Spa
+  - エグザンプル ヘッドスパ
+exclude_patterns: []
+official_domains:   # 公式サイト（サブドメインも公式として数える）
+  - example.com
+owned_urls:         # 公式サイト以外で、お店が自分で持っているページ
+  - instagram.com/example
+user_location:      # 検索を地域に寄せる（対応している API だけに渡す）
+  country: VN
+  city: Ho Chi Minh City
+  region: Ho Chi Minh City
+  timezone: Asia/Ho_Chi_Minh
