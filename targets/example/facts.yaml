@@ -1,0 +1,25 @@
+# 正解データ（架空のお店の見本）。AI の答えに、ここと食い違う記述がないかを判定する。
+# 分からない値は書かない（判定に使わない）。
+as_of: 2026-11-01
+name: Example Head Spa
+category: 日本式ヘッドスパ (Japanese head spa)
+address: 1 Example Street, District 1, Ho Chi Minh City, Vietnam
+website: https://example.com/
+hours:
+  open: "10:00"
+  close: "21:00"
+  last_booking: "20:00"
+  closed: 毎週火曜日
+pricing:
+  currency: VND
+  tax_and_tip: 表示価格は税込み。チップは不要
+  menu:
+    head_spa:
+      - {name: Head Spa 60, minutes: 60, price: 900000}
+      - {name: Head Spa 90, minutes: 90, price: 1300000}
+languages:
+  spoken: [ja, en]
+booking:
+  channels: [LINE, WhatsApp, 電話]
+known_false:   # よくある取り違え（答えに出たら誤りと判定してほしいもの）
+  - 年中無休（誤り。火曜定休）
