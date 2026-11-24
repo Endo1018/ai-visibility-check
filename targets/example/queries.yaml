@@ -1,0 +1,9 @@
+# 言語ごとに3種類の質問。id は集計の鍵なので、一度使ったら変えない（文を変えるなら新しい id に）
+# type: discovery=店名を出さずに探す / brand=店名で聞く / attribute=条件で探す
+queries:
+  - {id: ja-discovery, lang: ja, type: discovery, text: "ホーチミン1区 おすすめ ヘッドスパ"}
+  - {id: ja-brand,     lang: ja, type: brand,     text: "Example Head Spaについて教えて"}
+  - {id: ja-attribute, lang: ja, type: attribute, text: "日本語が通じるヘッドスパ ホーチミン"}
+  - {id: en-discovery, lang: en, type: discovery, text: "best head spa in District 1, Ho Chi Minh City"}
+  - {id: en-brand,     lang: en, type: brand,     text: "Tell me about Example Head Spa"}
+  - {id: en-attribute, lang: en, type: attribute, text: "Japanese-style head spa in Ho Chi Minh City with English-speaking staff"}
